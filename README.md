@@ -31,7 +31,7 @@ Fix mobile data gaps — Work with Data Engineering to resolve untracked mobile 
 🗂️ Project Structure
 google-merchandise-store-sql-analysis/
 │
-├── README.md                          # Project overview (you are here)
+├── README.md                          # Project overview 
 ├── sql/
 │   ├── 01_database_setup.sql          # Database creation and data combination
 │   ├── 02_data_exploration.sql        # Null checks, duplicate analysis, session ID fix
@@ -43,15 +43,21 @@ google-merchandise-store-sql-analysis/
 │   └── 08_channel_monetisation.sql    # Full channel performance with conversions
 
 🔍 Technical Highlights
-1. Engineering a reliable session identifier
+1. Engineering a reliable session identifier:
+
 visitid appeared unique but wasn't — multiple visitors can start sessions at the same timestamp. I solved this by concatenating fullvisitorid with visitid to create a truly unique session key.
+
+
 sqlSELECT
     CONCAT(fullvisitorid, '-', visitid) AS unique_session_id,
     COUNT(*) AS total_rows
 FROM gms_project.data_combined
 GROUP BY 1
 HAVING COUNT(*) > 1;
-2. Full channel performance breakdown using window functions
+
+
+3. Full channel performance breakdown using window functions:
+   
 Combined bounce rate, conversion rate, average time on site, and revenue in a single query using SQL window functions — no separate queries needed.
 sqlSELECT
     channelGrouping,
@@ -72,8 +78,13 @@ FROM (
 ) t1
 GROUP BY 1
 ORDER BY 2 DESC;
-3. Uncovering the mobile revenue gap by region
+
+
+5. Uncovering the mobile revenue gap by region:
+
 Used window functions to calculate each region's share of total mobile sessions and revenue simultaneously — revealing that Washington state generates 11% of mobile revenue from just 1% of sessions.
+
+
 sqlSELECT
     deviceCategory,
     region,
@@ -99,7 +110,9 @@ FROM (
 GROUP BY 1,2
 ORDER BY 3 DESC;
 
-🛠️ Tools & Techniques
+
+🛠️ Tools & Techniques:
+
 CategoryDetailsDatabaseMySQL, MySQL WorkbenchSQL techniquesWindow functions, CASE statements, subqueries, date functions, string functions, UNION ALL, GROUP BY, HAVINGAnalysis areasUser behavior, device performance, traffic channels, regional analysis, retention, conversion rate analysisData tasksDatabase creation, data merging, null handling, deduplication, session engineering
 
 📈 Analysis Areas Covered

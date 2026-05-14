@@ -1,126 +1,188 @@
-🛒 Digital Marketing Strategy Optimisation — SQL Analysis
-Google Merchandise Store | MySQL | E-commerce Analytics
+# E-Commerce Marketing Analytics — SQL
+### Google Merchandise Store | MySQL 
 
-📌 Project Overview
-The Google Marketing Team was running multiple campaigns simultaneously but had no unified view of which channels were actually driving revenue versus just traffic. Without consolidated data, proving ROI to stakeholders and making confident marketing decisions was a constant challenge.
-As the analyst on this project, I built a MySQL database from scratch, merged three months of raw session data into a single unified dataset, and conducted an in-depth analysis of user behavior, device performance, traffic channels, and regional patterns — delivering 10 data-backed strategic recommendations to boost revenue.
+> 📂 Full SQL queries and dataset structure → [`TECHNICAL.md`](TECHNICAL.md)
 
-Dataset: Google Merchandise Store (real e-commerce platform)
-Period: October 1, 2016 — December 31, 2016
-Scope: US website sessions across 3 months
-Tool: MySQL Workbench
+---
 
+## 🏢 Client & Project Background
 
-📊 Key Findings
-FindingInsight🏆 Top converting channelReferral converts at 7% — 3x higher than any other channel📱 Mobile revenue gapMobile = 25% of sessions but only 5% of revenue🔄 Retention problem80% of users visit only once — major retention opportunity📍 Hidden high-value marketWashington state = 1% of mobile sessions → 11% of revenue📅 Best conversion dayMondays convert best despite lower traffic than Tuesdays📈 Holiday upliftDecember traffic spike confirms seasonal campaign potential
+| | |
+|---|---|
+| **Client** | Google Marketing Team — United States |
+| **Platform** | Google Merchandise Store — Google-branded apparel, lifestyle & stationery |
+| **Data Source** | Google Analytics Public Dataset · Google BigQuery |
 
-💡 Strategic Recommendations
+### The Problem
 
-Seasonal campaigns — Replicate December holiday strategy year-round for an estimated 20–25% revenue uplift in non-peak months
-Maximize Monday conversions — Boost Monday traffic by 10% through targeted start-of-week promotions
-Enhance mobile experience — Optimize mobile checkout and UI to close the 25% sessions vs 5% revenue gap
-Expand referral partnerships — Referral's 7% conversion rate makes it the highest ROI channel — invest accordingly
-Target high-value regions — Focus mobile campaigns on Washington and Illinois which punch far above their session share
-Retention strategy — Launch loyalty programs and retargeting campaigns to convert 80% one-time visitors into repeat buyers
-Weekday promotions — Leverage peak Tuesday/Wednesday traffic with targeted deals and email campaigns
-Revamp social strategy — Social drives traffic but has the lowest conversion rate — campaigns need a full redesign
-Improve affiliate quality — Affiliates have the highest bounce rate and lowest conversions — audit and restructure partnerships
-Fix mobile data gaps — Work with Data Engineering to resolve untracked mobile session regions for more accurate analysis
+The Google Marketing Team ran campaigns across **7 channels simultaneously** with no unified view of which were driving revenue. Leadership needed answers to 6 critical questions:
 
+| # | Business Challenge |
+|---|---|
+| 1 | How do users interact with the platform — and what behaviours drive purchases? |
+| 2 | Are promotional campaigns driving **long-term retention** or only short-term sales? |
+| 3 | How does **mobile and web experience** impact sales and engagement? |
+| 4 | Which **geographic markets** are most profitable? |
+| 5 | How effective are strategies at **acquiring and retaining** customers? |
+| 6 | Which **traffic channels** yield the highest conversion rates — and why? |
 
-🗂️ Project Structure
-google-merchandise-store-sql-analysis/
-│
-├── README.md                          # Project overview 
-├── sql/
-│   ├── 01_database_setup.sql          # Database creation and data combination
-│   ├── 02_data_exploration.sql        # Null checks, duplicate analysis, session ID fix
-│   ├── 03_engagement_by_day.sql       # Daily and weekday traffic analysis
-│   ├── 04_device_analysis.sql         # Device performance and revenue breakdown
-│   ├── 05_regional_analysis.sql       # Geographic revenue and mobile analysis
-│   ├── 06_retention_analysis.sql      # New vs returning visitor breakdown
-│   ├── 07_acquisition_analysis.sql    # Bounce rate and channel performance
-│   └── 08_channel_monetisation.sql    # Full channel performance with conversions
+### My Role
+As the marketing analyst, I built a **MySQL database from scratch**, merged 3 months of raw session data, and performed full data preprocessing. I then used **advanced SQL** — window functions, date functions, string functions, and subqueries — to turn fragmented data into actionable business intelligence.
 
-🔍 Technical Highlights
-1. Engineering a reliable session identifier:
+---
 
-visitid appeared unique but wasn't — multiple visitors can start sessions at the same timestamp. I solved this by concatenating fullvisitorid with visitid to create a truly unique session key.
+## 🎯 Project Objective
 
+> **To identify exactly where Google's e-commerce platform was losing revenue — and prescribe specific, measurable actions to recover it.**
 
-sqlSELECT
-    CONCAT(fullvisitorid, '-', visitid) AS unique_session_id,
-    COUNT(*) AS total_rows
-FROM gms_project.data_combined
-GROUP BY 1
-HAVING COUNT(*) > 1;
+| # | Business Question | Analysis Area |
+|---|---|---|
+| 1 | Which days drive the most sessions — and the most conversions? | Engagement & Monetisation |
+| 2 | Where is the mobile experience failing to convert traffic into revenue? | Device Performance |
+| 3 | Which channels are worth investing in — and which are wasting budget? | Channel Attribution |
+| 4 | Are we retaining customers, or constantly paying to acquire new ones? | Retention |
 
+---
 
-3. Full channel performance breakdown using window functions:
-   
-Combined bounce rate, conversion rate, average time on site, and revenue in a single query using SQL window functions — no separate queries needed.
-sqlSELECT
-    channelGrouping,
-    COUNT(DISTINCT unique_session_id) AS sessions,
-    ((SUM(bounces)/COUNT(DISTINCT unique_session_id))*100) AS bounce_rate,
-    (SUM(pageviews)/COUNT(DISTINCT unique_session_id)) AS avg_pages_on_site,
-    (SUM(timeonsite)/COUNT(DISTINCT unique_session_id)) AS avg_time_on_site,
-    ((SUM(CASE WHEN transactions >= 1 THEN 1 ELSE 0 END)
-        /COUNT(DISTINCT unique_session_id))*100) AS conversion_rate,
-    SUM(transactionrevenue)/1e6 AS revenue
-FROM (
-    SELECT
-        channelGrouping, bounces, pageviews,
-        timeonsite, transactions, transactionrevenue,
-        CONCAT(fullvisitorid, '-', visitid) AS unique_session_id
-    FROM gms_project.data_combined
-    GROUP BY 1,2,3,4,5,6,7
-) t1
-GROUP BY 1
-ORDER BY 2 DESC;
+## 📊 Business Insights
 
+---
 
-5. Uncovering the mobile revenue gap by region:
+### Analysis 1 — Website Engagement & Monetisation by Day
 
-Used window functions to calculate each region's share of total mobile sessions and revenue simultaneously — revealing that Washington state generates 11% of mobile revenue from just 1% of sessions.
+<img width="888" height="658" alt="Website_Engagement_By_Day" src="https://github.com/user-attachments/assets/1549e85b-6ea1-464f-9b51-3d063b8051e5" />
+
+| Day | Sessions | Conversion Rate | Performance |
+|---|---|---|---|
+| Monday | 16,500 | **3.5%** | 🥇 Highest conversion |
+| Tuesday | **17,300** | 3.2% | 🥇 Highest traffic |
+| Wednesday | 16,800 | 3.1% | ✅ Strong |
+| Thursday | 16,200 | 3.0% | ✅ Strong |
+| Friday | 14,900 | 2.8% | ⚠️ Declining |
+| Saturday | 10,100 | **2.5%** | 🔴 Lowest conversion |
+| Sunday | 9,600 | 2.6% | 🔴 Weak |
+
+> 🔑 **Monday leads conversion at 3.5% but ranks 2nd in traffic.** Weekday sessions (Mon–Thu) are the most valuable monetisation window. Weekend conversion drops **29% vs Monday**, signalling an opportunity for targeted weekend promotions and remarketing campaigns.
+
+---
+
+### Analysis 2 — Website Engagement & Monetisation by Device
+
+<img width="1536" height="1024" alt="Website Engagement by Device" src="https://github.com/user-attachments/assets/79b791fa-e2fc-4a3e-bea0-4557cf96a83a" />
+
+| Device | Sessions Share | Revenue Share | Gap |
+|---|---|---|---|
+| 🖥️ Desktop | 72% | **94%** | Converts above session share ✅ |
+| 📱 **Mobile** | **24%** | **5%** | 🔴 **19% revenue gap** |
+| 📟 Tablet | 4% | 1% | Minor underperformance |
+
+> 🔑 **Mobile drives 24% of sessions but only 5% of revenue — a near 5x gap.** This is not a demand problem — it's a **checkout friction problem.** Optimising mobile UX, simplifying the checkout flow, and adding mobile payment options (Apple Pay, Google Pay) directly targets this gap.
+
+---
+
+### Analysis 3 — Website Acquisition & Monetisation by Channel
 
 
-sqlSELECT
-    deviceCategory,
-    region,
-    COUNT(DISTINCT unique_session_id) AS sessions,
-    ((COUNT(DISTINCT unique_session_id)/SUM(COUNT(DISTINCT unique_session_id))
-        OVER ())*100) AS sessions_percentage,
-    SUM(transactionrevenue)/1e6 AS revenue,
-    ((SUM(transactionrevenue)/SUM(SUM(transactionrevenue))
-        OVER ())*100) AS revenue_percentage
-FROM (
-    SELECT
-        deviceCategory,
-        CASE
-            WHEN region = '' OR region IS NULL THEN 'NA'
-            ELSE region
-        END AS region,
-        transactionrevenue,
-        CONCAT(fullvisitorid, '-', visitid) AS unique_session_id
-    FROM gms_project.data_combined
-    WHERE deviceCategory = 'mobile'
-    GROUP BY 1,2,3,4
-) t1
-GROUP BY 1,2
-ORDER BY 3 DESC;
+| Channel | Sessions | Bounce Rate | Conversion Rate | Revenue | Grade |
+|---|---|---|---|---|---|
+| 🏆 **Referral** | 7,500 | **15%** | **6.6%** | **$163M** | ✅ **A+** |
+| 🔍 Organic Search | **39,900** | 32% | 3.1% | High | ✅ A |
+| 🏠 Direct | 28,000 | 46% | 2.0% | Moderate | ⚠️ C+ |
+| 📱 Social | 8,500 | 46% | **<1%** | Low | 🔴 D |
+| 💰 Paid Search | 11,000 | 34% | 2.1% | Moderate | ✅ B |
+| 🖥️ Display | 5,200 | 34% | 1.2% | Low | ⚠️ C |
+| 🤝 Affiliates | 2,100 | **51%** | **<0.5%** | Minimal | 🔴 F |
+
+> 🔑 **Referral is the standout channel** — lowest bounce rate (15%), highest conversion (6.6%), and strongest revenue. **Social and Affiliates are the clear underperformers** — high traffic, minimal return. Every pound spent on Affiliates is largely wasted at a 51% bounce rate.
+
+---
+
+### Analysis 4 — Website Retention: New vs Returning Visitors
+
+<img width="1536" height="1024" alt="Website Retention" src="https://github.com/user-attachments/assets/e2fefa1d-7b18-4a61-94d4-ef124d8439b3" />
 
 
-🛠️ Tools & Techniques:
+| Visitor Type | Share | Healthy Benchmark | Gap |
+|---|---|---|---|
+| 🆕 New Visitors | **80%** | 50–70% | 🔴 Above healthy range |
+| 🔁 Returning Visitors | **20%** | 30–50% | 🔴 Below benchmark |
 
-CategoryDetailsDatabaseMySQL, MySQL WorkbenchSQL techniquesWindow functions, CASE statements, subqueries, date functions, string functions, UNION ALL, GROUP BY, HAVINGAnalysis areasUser behavior, device performance, traffic channels, regional analysis, retention, conversion rate analysisData tasksDatabase creation, data merging, null handling, deduplication, session engineering
+> 🔑 **80% of users visit only once** — well above the healthy benchmark. The platform attracts strongly but lacks any retention mechanism. Raising returning visitors from **20% → 30%** adds **50% more repeat sessions at zero acquisition cost** — the highest-ROI retention lever available.
 
-📈 Analysis Areas Covered
+---
 
-✅ Website engagement by day and weekday
-✅ Conversion rate analysis by day
-✅ Device performance — sessions vs revenue
-✅ Regional breakdown of mobile revenue
-✅ New vs returning visitor retention
-✅ Bounce rate by channel
-✅ Full channel monetisation analysis
+## 🚀 Strategic Recommendations
+
+> 5 highest-impact actions derived from the analysis, prioritised by revenue potential.
+
+---
+
+**📱 Priority 1 — Enhance Mobile Experience**
+`Data: 24% of sessions → 5% of revenue`
+
+| Action | Target Impact |
+|---|---|
+| Streamline checkout to 3 steps · Add Apple Pay & Google Pay | **Close 50% of mobile revenue gap** |
+| Optimise mobile UI and page load speed | **Est. +150% mobile revenue** |
+
+---
+
+**🔁 Priority 2 — Strengthen Retention**
+`Data: 80% one-time visitors · Benchmark is 30–50% returning`
+
+| Action | Target Impact |
+|---|---|
+| Email retargeting for first-time visitors · Launch loyalty programme | **Raise returning visitors 20% → 30%** |
+| Personalised content for repeat visitors | **+50% repeat sessions at zero acquisition cost** |
+
+---
+
+**🏆 Priority 3 — Expand Referral Partnerships**
+`Data: 6.6% conversion · $163M revenue · Lowest bounce rate (15%)`
+
+| Action | Target Impact |
+|---|---|
+| Partner with top referring sites · Offer revenue share to quality partners | **+20% referral traffic** |
+| Analyse and replicate top referrer profiles | **Highest ROI channel — scale what works** |
+
+---
+
+**📅 Priority 4 — Seasonal & Holiday Campaigns**
+`Data: December traffic spike clearly outperforms all other months`
+
+| Action | Target Impact |
+|---|---|
+| Replicate December tactics across key periods · Create themed promotions | **Est. +25% revenue in campaign months** |
+
+---
+
+**✂️ Priority 5 — Reevaluate Affiliate Strategy**
+`Data: 51% bounce rate · <0.5% conversion · Worst channel by every metric`
+
+| Action | Target Impact |
+|---|---|
+| Audit and terminate underperforming affiliates | **Eliminate wasted spend** |
+| Redirect budget to Referral expansion | **Reinvest into 6.6% conversion channel** |
+
+---
+
+### 📊 Priority Summary
+
+| Priority | Area | Current State | Target |
+|---|---|---|---|
+| 🔴 1 — Critical | Mobile experience | 5% revenue from 24% sessions | **+150% mobile revenue** |
+| 🔴 2 — Critical | Retention | 80% one-time visitors | **+50% repeat sessions** |
+| 🟠 3 — High | Referral expansion | 6.6% conversion underinvested | **+20% referral traffic** |
+| 🟠 4 — High | Seasonal campaigns | December spike replicable | **+25% revenue uplift** |
+| 🟡 5 — Medium | Affiliate audit | 51% bounce · <0.5% conversion | **Eliminate wasted budget** |
+
+---
+
+## 🛠️ Tools & Techniques
+
+`MySQL` · `MySQL Workbench` · `Window Functions` · `Subqueries` · `CASE WHEN` · `Date Functions` · `UNION ALL` · `Conversion Rate Analysis` · `Channel Attribution` · `E-commerce Analytics`
+
+---
+
+
+

@@ -74,9 +74,9 @@ As the marketing analyst, I built a **MySQL database from scratch**, merged 3 mo
 
 | Device | Sessions Share | Revenue Share | Gap |
 |---|---|---|---|
-| 🖥️ Desktop | 72% | **94%** | Converts above session share ✅ |
-| 📱 **Mobile** | **24%** | **5%** | 🔴 **19% revenue gap** |
-| 📟 Tablet | 4% | 1% | Minor underperformance |
+| Desktop | 72% | **94%** | Converts above session share |
+| **Mobile** | **24%** | **5%** | **19% revenue gap** |
+| Tablet | 4% | 1% | Minor underperformance |
 
 > **Mobile drives 24% of sessions but only 5% of revenue — a near 5x gap.** This is not a demand problem — it's a **checkout friction problem.** Optimising mobile UX, simplifying the checkout flow, and adding mobile payment options (Apple Pay, Google Pay) directly targets this gap.
 
@@ -112,8 +112,8 @@ As the marketing analyst, I built a **MySQL database from scratch**, merged 3 mo
 
 | Visitor Type | Share | Healthy Benchmark | Gap |
 |---|---|---|---|
-| 🆕 New Visitors | **80%** | 50–70% | 🔴 Above healthy range |
-| 🔁 Returning Visitors | **20%** | 30–50% | 🔴 Below benchmark |
+| New Visitors | **80%** | 50–70% | Above healthy range |
+| Returning Visitors | **20%** | 30–50% | Below benchmark |
 
 > **80% of users visit only once** — well above the healthy benchmark. The platform attracts strongly but lacks any retention mechanism. Raising returning visitors from **20% → 30%** adds **50% more repeat sessions at zero acquisition cost** — the highest-ROI retention lever available.
 

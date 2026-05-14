@@ -1,7 +1,7 @@
 # E-Commerce Marketing Analytics — SQL
 ### Google Merchandise Store | MySQL 
 
-> 📂 Full SQL queries and dataset structure → [`TECHNICAL.md`](TECHNICAL.md)
+> 📂 Full SQL queries and dataset structure → gms_project_queries.sql
 
 ---
 

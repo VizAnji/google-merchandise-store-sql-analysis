@@ -1,7 +1,7 @@
 # E-Commerce Marketing Analytics — SQL
-### Google Merchandise Store | MySQL 
+### Google Merchandise Store 
 
-> 📂 Full SQL queries and dataset structure → gms_project_queries.sql
+> 📂 Full SQL Queries → [gms_project_queries.sql](https://github.com/VizAnji/google-merchandise-store-sql-analysis/blob/main/gms_project_queries.sql)
 
 ---
 

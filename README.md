@@ -5,7 +5,7 @@
 
 ---
 
-## 🏢 Client & Project Background
+## Client & Project Background
 
 | | |
 |---|---|
@@ -31,7 +31,7 @@ As the marketing analyst, I built a **MySQL database from scratch**, merged 3 mo
 
 ---
 
-## 🎯 Project Objective
+## Project Objective
 
 > **To identify exactly where Google's e-commerce platform was losing revenue — and prescribe specific, measurable actions to recover it.**
 
@@ -123,7 +123,7 @@ As the marketing analyst, I built a **MySQL database from scratch**, merged 3 mo
 
 
 
-## 🚀 Recommendations & Strategic Action Plan
+## Recommendations & Strategic Action Plan
 
 > 10 data-backed recommendations derived from the analysis, organised by business area with measurable impact targets.
 

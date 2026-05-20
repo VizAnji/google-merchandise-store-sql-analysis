@@ -1,7 +1,7 @@
 # E-Commerce Marketing Analytics — SQL
 ### Google Merchandise Store 
 
-> 📂 Full SQL Queries → [gms_project_queries.sql](https://github.com/VizAnji/google-merchandise-store-sql-analysis/blob/main/gms_project_queries.sql)
+> Full SQL Queries → [gms_project_queries.sql](https://github.com/VizAnji/google-merchandise-store-sql-analysis/blob/main/gms_project_queries.sql)
 
 ---
 
@@ -50,7 +50,7 @@ As the marketing analyst, I built a **MySQL database from scratch**, merged 3 mo
 
 ### Analysis 1 — Website Engagement & Monetisation by Day
 
-<img width="888" height="658" alt="Website_Engagement_By_Day" src="https://github.com/user-attachments/assets/1549e85b-6ea1-464f-9b51-3d063b8051e5" />
+<img width="500" height="350" alt="Website_Engagement_By_Day" src="https://github.com/user-attachments/assets/1549e85b-6ea1-464f-9b51-3d063b8051e5" />
 
 | Day | Sessions | Conversion Rate | Performance |
 |---|---|---|---|
@@ -70,7 +70,7 @@ As the marketing analyst, I built a **MySQL database from scratch**, merged 3 mo
 
 ### Analysis 2 — Website Engagement & Monetisation by Device
 
-<img width="1536" height="1024" alt="Website Engagement by Device" src="https://github.com/user-attachments/assets/79b791fa-e2fc-4a3e-bea0-4557cf96a83a" />
+<img width="470" height="300" alt="Website Engagement by Device" src="https://github.com/user-attachments/assets/79b791fa-e2fc-4a3e-bea0-4557cf96a83a" />
 
 | Device | Sessions Share | Revenue Share | Gap |
 |---|---|---|---|
@@ -107,7 +107,7 @@ As the marketing analyst, I built a **MySQL database from scratch**, merged 3 mo
 
 ### Analysis 4 — Website Retention: New vs Returning Visitors
 
-<img width="1536" height="1024" alt="Website Retention" src="https://github.com/user-attachments/assets/e2fefa1d-7b18-4a61-94d4-ef124d8439b3" />
+<img width="470" height="300" alt="Website Retention" src="https://github.com/user-attachments/assets/e2fefa1d-7b18-4a61-94d4-ef124d8439b3" />
 
 
 | Visitor Type | Share | Healthy Benchmark | Gap |
@@ -115,7 +115,7 @@ As the marketing analyst, I built a **MySQL database from scratch**, merged 3 mo
 | New Visitors | **80%** | 50–70% | Above healthy range |
 | Returning Visitors | **20%** | 30–50% | Below benchmark |
 
-> **80% of users visit only once** — well above the healthy benchmark. The platform attracts strongly but lacks any retention mechanism. Raising returning visitors from **20% → 30%** adds **50% more repeat sessions at zero acquisition cost** — the highest-ROI retention lever available.
+> **80% of users visit only once**  well above the healthy benchmark. The platform attracts strongly but lacks any retention mechanism. Raising returning visitors from **20% → 30%** adds **50% more repeat sessions at zero acquisition cost** — the highest-ROI retention lever available.
 
 
 
@@ -183,7 +183,7 @@ As the marketing analyst, I built a **MySQL database from scratch**, merged 3 mo
 | Review | Affiliate audit | 52% bounce, 0.3% conversion | **Eliminate wasted budget** |
 ---
 
-## 🛠️ Tools & Techniques
+## Tools & Techniques
 
 `MySQL` · `MySQL Workbench` · `Window Functions` · `Subqueries` · `CASE WHEN` · `Date Functions` · `UNION ALL` · `Conversion Rate Analysis` · `Channel Attribution` · `E-commerce Analytics`
 
